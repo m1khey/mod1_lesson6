@@ -6,8 +6,8 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="simple_mvc" />
         <module name="mod1_lesson6" />
+        <module name="simple_mvc" />
       </profile>
     </annotationProcessing>
   </component>

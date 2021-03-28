@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User registration</title>
+    <style>
+        #login_container {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+        }
+
+        #users {
+            width: 50%;
+            border-collapse: collapse;
+        }
+
+        table {
+            margin: 25px;
+        }
+
+        th {
+            text-align: left;
+        }
+
+        th, td {
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+<div id="login_container">
+    <form method="post" th:action="@{/users/save}" th:object="${loginForm}">
+         <table>
+               <tr>
+                   <td>
+                       <input type="text" placeholder="set your username" th:field="*{username}">
+                   </td>
+                   <td>
+                       <input type="text" placeholder="set your password" th:field="*{password}">
+                   </td>
+                   <td>
+                       <input type="submit" value="save">
+                   </td>
+               </tr>
+           </table>
+       </form>
+
+       <form method="post" th:action="@{/users/remove}">
+           <table>
+               <tr>
+                   <td>
+                       <input type="text" th:name="userNameToRemove">
+                   </td>
+                   <td>
+                       <input type="submit" value="remove">
+                   </td>
+               </tr>
+           </table>
+       </form>
+       <table id="storage">
+           <tr>
+               <td>username</td>
+               <td>password</td>
+           </tr>
+           <tr th:each="user : ${userList}">
+               <td th:text="${user.username}"></td>
+               <td th:text="${user.password}"></td>
+           </tr>
+       </table>
+</div>
+</body>
+</html>

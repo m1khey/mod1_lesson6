@@ -13,6 +13,12 @@
         .login_item {
             margin-bottom: 10px;
         }
+        #new_account {
+            position: relative;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
     </style>
 </head>
 <body>
@@ -26,7 +32,9 @@
         <br>
         <input class="login_item" type="submit" value="login">
     </form>
-
+    <form id="new_account" method="get" th:action="@{/login/new_user}" >
+        <input class="login_item" type="submit" value="new account">
+    </form>
 </div>
 </body>
 </html>

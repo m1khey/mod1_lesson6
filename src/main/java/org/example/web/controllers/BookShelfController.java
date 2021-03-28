@@ -33,17 +33,18 @@ public class BookShelfController {
 
     @PostMapping("/save")
     public String saveBook(Book book) {
-        bookService.saveBook(book);
+        if (book.getAuthor()!=null && book.getTitle()!=null && book.getSize()!=null) {
+            bookService.saveBook(book);
+        }
         logger.info("current repository size: " + bookService.getAllBooks().size());
         return "redirect:/books/shelf";
     }
 
     @PostMapping("/remove")
     public String removeBook(@RequestParam(value = "bookIdToRemove") Integer bookIdToRemove) {
-        if (bookService.removeBookById(bookIdToRemove)) {
-            return "redirect:/books/shelf";
-        } else {
-            return "book_shelf";
-        }
+        bookService.removeBookById(bookIdToRemove);
+
+        return "redirect:/books/shelf";
+        
     }
 }

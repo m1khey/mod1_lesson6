@@ -2,6 +2,7 @@ package org.example.web.controllers;
 
 import org.apache.log4j.Logger;
 import org.example.app.services.LoginService;
+import org.example.app.services.UserService;
 import org.example.web.dto.LoginForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,4 +40,12 @@ public class LoginController {
             return "redirect:/login";
         }
     }
+
+    @GetMapping("/new_user")
+    public String newAccount(Model model) {
+        logger.info("GET /users returns user_storage.html");
+        model.addAttribute("loginForm", new LoginForm());
+        return "redirect:/users/storage";
+    }
+
 }

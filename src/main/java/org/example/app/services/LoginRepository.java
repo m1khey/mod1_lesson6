@@ -8,9 +8,9 @@ import org.example.web.dto.LoginForm;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class UserRepository implements ProjectUserRepository<LoginForm> {
+public class LoginRepository implements ProjectLoginRepository<LoginForm> {
 
-    private final Logger logger = Logger.getLogger(UserRepository.class);
+    private final Logger logger = Logger.getLogger(LoginRepository.class);
     private final List<LoginForm> repo = new ArrayList<>();
 
     @Override
@@ -35,6 +35,19 @@ public class UserRepository implements ProjectUserRepository<LoginForm> {
                 return repo.remove(loginForm);
             }
         }
+        return false;
+    }
+
+    @Override
+    public boolean authenticate(LoginForm loginFrom) {
+        for (LoginForm lf:repo
+             ) {
+            if (lf.getUsername().equals(loginFrom.getUsername()) &&
+            lf.getPassword().equals(loginFrom.getPassword())) {
+            return true;
+            }
+        }
+
         return false;
     }
 }

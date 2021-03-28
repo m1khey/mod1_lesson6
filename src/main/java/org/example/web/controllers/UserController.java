@@ -1,8 +1,7 @@
 package org.example.web.controllers;
 
 import org.apache.log4j.Logger;
-import org.example.app.services.UserService;
-import org.example.web.dto.Book;
+import org.example.app.services.LoginService;
 import org.example.web.dto.LoginForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,33 +16,33 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class UserController {
 
     private Logger logger = Logger.getLogger(UserController.class);
-    private UserService userService;
+    private LoginService loginService;
 
     @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public UserController(LoginService loginService) {
+        this. loginService =  loginService;
     }
 
     @GetMapping("/storage")
     public String users(Model model) {
         logger.info("got user storage");
         model.addAttribute("loginForm", new LoginForm());
-        model.addAttribute("userList", userService.getAllUsers());
+        model.addAttribute("userList", loginService.getAllUsers());
         return "user_storage";
     }
 
     @PostMapping("/save")
     public String saveUser(LoginForm loginForm) {
         if (loginForm.getUsername()!=null && loginForm.getPassword()!=null) {
-            userService.saveUser(loginForm);
+            loginService.saveUser(loginForm);
         }
-        logger.info("current repository size: " + userService.getAllUsers().size());
+        logger.info("current repository size: " + loginService.getAllUsers().size());
         return "redirect:/users/storage";
     }
 
     @PostMapping("/remove")
     public String removeUser(@RequestParam(value = "userNameToRemove") String userNameToRemove) {
-        userService.removeUserByName(userNameToRemove);
+        loginService.removeUserByName(userNameToRemove);
 
         return "redirect:/users/storage";
     }

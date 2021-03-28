@@ -37,7 +37,7 @@ public class UserController {
             loginService.saveUser(loginForm);
         }
         logger.info("current repository size: " + loginService.getAllUsers().size());
-        return "redirect:/users/storage";
+        return "redirect:/login";
     }
 
     @PostMapping("/remove")

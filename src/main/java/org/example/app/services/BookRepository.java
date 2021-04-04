@@ -12,10 +12,15 @@ public class BookRepository implements ProjectRepository<Book> {
 
     private final Logger logger = Logger.getLogger(BookRepository.class);
     private final List<Book> repo = new ArrayList<>();
+    private final List<Book> searchBookList = new ArrayList<>();
 
     @Override
     public List<Book> retreiveAll() {
-        return new ArrayList<>(repo);
+        if (searchBookList.size()==0) {
+            return new ArrayList<>(repo);
+        } else {
+            return new ArrayList<>(searchBookList);
+        }
     }
 
     @Override
@@ -23,6 +28,21 @@ public class BookRepository implements ProjectRepository<Book> {
         book.setId(book.hashCode());
         logger.info("store new book: " + book);
         repo.add(book);
+    }
+
+    @Override
+    public void searchItem(Object bookToSearch) {
+        searchBookList.clear();
+
+        for (int i = 0; i <repo.size() ; i++) {
+            if (repo.get(i).getId().toString().equals(bookToSearch.toString()) ||
+                    repo.get(i).getAuthor().equals(bookToSearch) ||
+                    repo.get(i).getTitle().equals(bookToSearch) ||
+                    repo.get(i).getSize().toString().equals(bookToSearch.toString())) {
+                logger.info("search book completed: " + repo.get(i));
+                searchBookList.add(repo.get(i));
+            }
+        }
     }
 
     @Override

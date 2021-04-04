@@ -63,6 +63,19 @@
         </table>
     </form>
 
+    <form method="get" th:action="@{/books/search}">
+        <table>
+            <tr>
+                <td>
+                    <input type="text" placeholder="search book" th:name="bookToSearch">
+                </td>
+                <td>
+                    <input type="submit" value="search">
+                </td>
+            </tr>
+        </table>
+    </form>
+
 
     <table id="books">
         <tr>

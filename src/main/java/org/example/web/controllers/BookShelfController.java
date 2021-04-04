@@ -47,4 +47,12 @@ public class BookShelfController {
         return "redirect:/books/shelf";
         
     }
+
+    @GetMapping("/search")
+    public String searchBook(@RequestParam(value = "bookToSearch") Object bookToSearch) {
+        bookService.searchBook(bookToSearch);
+
+        return "redirect:/books/shelf";
+
+    }
 }

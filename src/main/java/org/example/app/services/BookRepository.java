@@ -26,11 +26,14 @@ public class BookRepository implements ProjectRepository<Book> {
     }
 
     @Override
-    public boolean removeItemById(Integer bookIdToRemove) {
+    public boolean removeItem(Object bookToRemove) {
         for (Book book : retreiveAll()) {
-            if (book.getId().equals(bookIdToRemove)) {
+            if (book.getId().toString().equals(bookToRemove.toString()) ||
+            book.getAuthor().equals(bookToRemove) ||
+            book.getTitle().equals(bookToRemove) ||
+            book.getSize().toString().equals(bookToRemove.toString())) {
                 logger.info("remove book completed: " + book);
-                return repo.remove(book);
+                repo.remove(book);
             }
         }
         return false;

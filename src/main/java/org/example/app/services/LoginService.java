@@ -18,18 +18,6 @@ public class LoginService {
         this.userRepo=userRepo;
     }
 
-    public List<LoginForm> getAllUsers(){
-        return userRepo.retreiveAllUsers();
-    }
-
-    public void saveUser(LoginForm loginForm){
-        userRepo.store(loginForm);
-    }
-
-    public boolean removeUserByName(String userNameToRemove){
-        return userRepo.removeItemByName(userNameToRemove);
-    }
-
     public boolean authenticate(LoginForm loginFrom) {
         logger.info("try auth with user-form: " + loginFrom);
         return userRepo.authenticate(loginFrom);

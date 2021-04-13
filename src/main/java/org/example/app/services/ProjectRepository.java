@@ -7,7 +7,7 @@ public interface ProjectRepository<T> {
 
     void store(T book);
 
-    void searchItem(Object bookToSearch);
+    List<T> searchItem(Object bookToSearch);
 
     boolean removeItem(Object bookToRemove);
 }

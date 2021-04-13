@@ -20,8 +20,8 @@ public class BookService {
         return bookRepo.retreiveAll();
     }
 
-    public void searchBook(Object bookToSearch){
-        bookRepo.searchItem(bookToSearch);
+    public List<Book> searchBook(Object bookToSearch){
+        return bookRepo.searchItem(bookToSearch);
     }
 
     public void saveBook(Book book) {

@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 @Controller
 @RequestMapping(value = "/books")
 public class BookShelfController {
@@ -28,6 +32,7 @@ public class BookShelfController {
         logger.info("got book shelf");
         model.addAttribute("book", new Book());
         model.addAttribute("bookList", bookService.getAllBooks());
+
         return "book_shelf";
     }
 
@@ -44,15 +49,15 @@ public class BookShelfController {
     public String removeBook(@RequestParam(value = "bookToRemove") Object bookToRemove) {
         bookService.removeBook(bookToRemove);
 
+        logger.info("Book remove ");
         return "redirect:/books/shelf";
-        
     }
 
     @GetMapping("/search")
-    public String searchBook(@RequestParam(value = "bookToSearch") Object bookToSearch) {
-        bookService.searchBook(bookToSearch);
+    public String searchBook(@RequestParam(value = "bookToSearch") Object bookToSearch, Model model) {
+        logger.info("got book shelf");
+        model.addAttribute("bookList", bookService.searchBook(bookToSearch));
 
-        return "redirect:/books/shelf";
-
+        return "book_shelf";
     }
 }

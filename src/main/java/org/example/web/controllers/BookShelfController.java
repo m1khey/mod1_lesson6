@@ -56,6 +56,7 @@ public class BookShelfController {
     @GetMapping("/search")
     public String searchBook(@RequestParam(value = "bookToSearch") Object bookToSearch, Model model) {
         logger.info("got book shelf");
+        model.addAttribute("book", new Book());
         model.addAttribute("bookList", bookService.searchBook(bookToSearch));
 
         return "book_shelf";

@@ -39,6 +39,9 @@ public class BookRepository implements ProjectRepository<Book> {
                 searchBookList.add(repo.get(i));
             }
         }
+        if (bookToSearch.equals("")) {
+            return repo;
+        }
 
         return searchBookList;
     }

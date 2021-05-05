@@ -7,6 +7,7 @@ import org.example.web.dto.LoginForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,5 +47,11 @@ public class LoginController {
         logger.info("GET /users returns user_storage.html");
         model.addAttribute("loginForm", new LoginForm());
         return "redirect:/users/storage";
+    }
+
+    @ExceptionHandler(BookShelfLoginException.class)
+    public String handleError(Model model, BookShelfLoginException exception){
+        model.addAttribute("errorMessage", exception.getMessage());
+        return "errors/404";
     }
 }

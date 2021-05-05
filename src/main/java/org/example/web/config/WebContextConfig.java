@@ -16,11 +16,8 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 @EnableWebMvc//<mvc:annotation-driven/>
 public class WebContextConfig implements WebMvcConfigurer {
 
-    Logger logger = Logger.getLogger(WebContextConfig.class);
-
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        logger.info("addResourceHandlers run");
         registry.addResourceHandler("/**").addResourceLocations("classpath:/images");
     }
 

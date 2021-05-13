@@ -1,6 +1,7 @@
 package org.example.web.controllers;
 
 import org.apache.log4j.Logger;
+import org.example.app.exception.UploadFileException;
 import org.example.app.services.BookService;
 import org.example.web.dto.Book;
 import org.example.web.dto.BookIdToRemove;
@@ -9,12 +10,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import sun.awt.image.BufferedImageDevice;
 
 import javax.validation.Valid;
 import java.io.BufferedOutputStream;
@@ -83,7 +80,11 @@ public class BookShelfController {
 
     @PostMapping("/uploadFile")
     public String uploadFile(@RequestParam("file")MultipartFile file) throws Exception{
+
         String name = file.getOriginalFilename();
+        if (name=="") {
+            throw new UploadFileException("File not uploaded, upload file!");
+        }
         byte[] bytes = file.getBytes();
 
         //create dir
@@ -102,5 +103,11 @@ public class BookShelfController {
         logger.info("new file saved at: "+ serverFile.getAbsolutePath());
 
         return "redirect:/books/shelf";
+    }
+
+    @ExceptionHandler(UploadFileException.class)
+    public String handlerUploadFiliException(Model model, UploadFileException exception){
+        model.addAttribute("errorMessage", exception.getMessage());
+        return "errors/500";
     }
 }

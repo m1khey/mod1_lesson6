@@ -53,17 +53,65 @@
         </table>
     </form>
 
-    <form method="post" th:action="@{/books/remove}" th:object="${bookIdToRemove}">
+    <form method="post" th:action="@{/books/remove by id}" th:object="${bookIdToRemove}">
         <table>
             <tr>
                 <td>
-                    <input type="text" placeholder="remove book" th:field="*{id}">
+                    <input type="text" placeholder="remove book by id" th:field="*{id}">
                 </td>
                 <td>
                     <input type="submit" value="remove">
                 </td>
                 <td th:if="${#fields.hasErrors()}">
                     <p>Wrong id or not found</p>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <form method="post" th:action="@{/books/remove by author}" th:object="${bookAuthorToRemove}">
+        <table>
+            <tr>
+                <td>
+                    <input type="text" placeholder="remove book by author" th:field="*{author}">
+                </td>
+                <td>
+                    <input type="submit" value="remove">
+                </td>
+                <td th:if="${#fields.hasErrors()}">
+                    <p>Wrong author or not found</p>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <form method="post" th:action="@{/books/remove by title}" th:object="${bookTitleToRemove}">
+        <table>
+            <tr>
+                <td>
+                    <input type="text" placeholder="remove book by title" th:field="*{title}">
+                </td>
+                <td>
+                    <input type="submit" value="remove">
+                </td>
+                <td th:if="${#fields.hasErrors()}">
+                    <p>Wrong title or not found</p>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <form method="post" th:action="@{/books/remove by size}" th:object="${bookSizeToRemove}">
+        <table>
+            <tr>
+                <td>
+                    <input type="text" placeholder="remove book by size" th:field="*{size}">
+                </td>
+                <td>
+                    <input type="submit" value="remove">
+                </td>
+                <td th:if="${#fields.hasErrors()}">
+                    <p>Wrong size or not found</p>
                 </td>
             </tr>
         </table>

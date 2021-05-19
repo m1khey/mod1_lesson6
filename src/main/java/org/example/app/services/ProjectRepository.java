@@ -9,5 +9,5 @@ public interface ProjectRepository<T> {
 
     List<T> searchItem(Object bookToSearch);
 
-    boolean removeItemById(Integer bookIdToRemove);
+    boolean removeItem(Object bookToRemove);
 }

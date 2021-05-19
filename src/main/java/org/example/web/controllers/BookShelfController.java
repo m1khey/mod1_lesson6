@@ -4,7 +4,10 @@ import org.apache.log4j.Logger;
 import org.example.app.exception.UploadFileException;
 import org.example.app.services.BookService;
 import org.example.web.dto.Book;
-import org.example.web.dto.BookIdToRemove;
+import org.example.web.dto.remove.BookAuthorToRemove;
+import org.example.web.dto.remove.BookIdToRemove;
+import org.example.web.dto.remove.BookSizeToRemove;
+import org.example.web.dto.remove.BookTitleToRemove;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -36,6 +39,9 @@ public class BookShelfController {
         logger.info(this.toString());
         model.addAttribute("book", new Book());
         model.addAttribute("bookIdToRemove", new BookIdToRemove());
+        model.addAttribute("bookAuthorToRemove", new BookAuthorToRemove());
+        model.addAttribute("bookTitleToRemove", new BookTitleToRemove());
+        model.addAttribute("bookSizeToRemove", new BookSizeToRemove());
         model.addAttribute("bookList", bookService.getAllBooks());
 
         return "book_shelf";
@@ -46,6 +52,9 @@ public class BookShelfController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("book", book);
             model.addAttribute("bookIdToRemove", new BookIdToRemove());
+            model.addAttribute("bookAuthorToRemove", new BookAuthorToRemove());
+            model.addAttribute("bookTitleToRemove", new BookTitleToRemove());
+            model.addAttribute("bookSizeToRemove", new BookSizeToRemove());
             model.addAttribute("bookList", bookService.getAllBooks());
 
             return "book_shelf";
@@ -57,17 +66,69 @@ public class BookShelfController {
         }
     }
 
-    @PostMapping("/remove")
+    //remove----------------------------------------------------------------
+
+    @PostMapping("/remove by id")
     public String removeBook(@Valid BookIdToRemove bookIdToRemove, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("book", new Book());
+            model.addAttribute("bookAuthorToRemove", new BookAuthorToRemove());
+            model.addAttribute("bookTitleToRemove", new BookTitleToRemove());
+            model.addAttribute("bookSizeToRemove", new BookSizeToRemove());
             model.addAttribute("bookList", bookService.getAllBooks());
             return "book_shelf";
         } else {
-            bookService.removeBookById(bookIdToRemove.getId());
+            bookService.removeBook(bookIdToRemove.getId());
             return "redirect:/books/shelf";
         }
     }
+
+    @PostMapping("/remove by author")
+    public String removeBook(@Valid BookAuthorToRemove bookAuthorToRemove, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("book", new Book());
+            model.addAttribute("bookIdToRemove", new BookIdToRemove());
+            model.addAttribute("bookTitleToRemove", new BookTitleToRemove());
+            model.addAttribute("bookSizeToRemove", new BookSizeToRemove());
+            model.addAttribute("bookList", bookService.getAllBooks());
+            return "book_shelf";
+        } else {
+            bookService.removeBook(bookAuthorToRemove.getAuthor());
+            return "redirect:/books/shelf";
+        }
+    }
+
+    @PostMapping("/remove by title")
+    public String removeBook(@Valid BookTitleToRemove bookTitleToRemove, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("book", new Book());
+            model.addAttribute("bookIdToRemove", new BookIdToRemove());
+            model.addAttribute("bookAuthorToRemove", new BookAuthorToRemove());
+            model.addAttribute("bookSizeToRemove", new BookSizeToRemove());
+            model.addAttribute("bookList", bookService.getAllBooks());
+            return "book_shelf";
+        } else {
+            bookService.removeBook(bookTitleToRemove.getTitle());
+            return "redirect:/books/shelf";
+        }
+    }
+
+    @PostMapping("/remove by size")
+    public String removeBook(@Valid BookSizeToRemove bookSizeToRemove, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("book", new Book());
+            model.addAttribute("bookIdToRemove", new BookIdToRemove());
+            model.addAttribute("bookAuthorToRemove", new BookAuthorToRemove());
+            model.addAttribute("bookTitleToRemove", new BookTitleToRemove());
+            model.addAttribute("bookList", bookService.getAllBooks());
+            return "book_shelf";
+        } else {
+            bookService.removeBook(bookSizeToRemove.getSize());
+            return "redirect:/books/shelf";
+        }
+    }
+
+    //------------------------------------------------------------------remove
 
     @GetMapping("/search")
     public String searchBook(@RequestParam(value = "bookToSearch") Object bookToSearch, Model model) {

@@ -11,7 +11,7 @@ public class BookTitleToRemove {
         return title;
     }
 
-    public void setTitle(String id) {
+    public void setTitle(String title) {
         this.title = title;
     }
 }

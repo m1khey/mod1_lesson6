@@ -55,21 +55,17 @@ public class BookRepository implements ProjectRepository<Book>, ApplicationConte
 
     @Override
     public List<Book> searchItem(Object bookToSearch) {
-        List<Book> searchBookList = new ArrayList<>();
+        List<Book> searchBookList= new ArrayList<>();
 
-//        for (int i = 0; i <repo.size() ; i++) {
-//            if (repo.get(i).getId().toString().equals(bookToSearch.toString()) ||
-//                    repo.get(i).getAuthor().equals(bookToSearch) ||
-//                    repo.get(i).getTitle().equals(bookToSearch) ||
-//                    repo.get(i).getSize().toString().equals(bookToSearch.toString())) {
-//                logger.info("search book completed: " + repo.get(i));
-//                searchBookList.add(repo.get(i));
-//            }
-//        }
-//        if (bookToSearch.equals("")) {
-//            return repo;
-//        }
-
+        for (int i = 0; i <retreiveAll().size() ; i++) {
+            if (retreiveAll().get(i).getId().toString().equals(bookToSearch.toString()) ||
+                    retreiveAll().get(i).getAuthor().equals(bookToSearch.toString()) ||
+                    retreiveAll().get(i).getTitle().equals(bookToSearch.toString()) ||
+                    retreiveAll().get(i).getSize().toString().equals(bookToSearch.toString())) {
+                logger.info("search book completed: " + retreiveAll().get(i));
+                searchBookList.add(retreiveAll().get(i));
+            }
+        }
         return searchBookList;
     }
 

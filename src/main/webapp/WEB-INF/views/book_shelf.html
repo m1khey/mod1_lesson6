@@ -69,6 +69,8 @@
         </table>
     </form>
 
+
+
     <form method="post" th:action="@{/books/remove by author}" th:object="${bookAuthorToRemove}">
         <table>
             <tr>
@@ -84,6 +86,8 @@
             </tr>
         </table>
     </form>
+
+
 
     <form method="post" th:action="@{/books/remove by title}" th:object="${bookTitleToRemove}">
         <table>
@@ -117,6 +121,70 @@
         </table>
     </form>
 
+    <form method="get" th:action="@{/books/search by id}" th:object="${bookIdToSearch}" style="float: right">
+        <table>
+            <tr>
+                <td>
+                    <input type="text" placeholder="search book by id" th:field="*{id}">
+                </td>
+                <td>
+                    <input type="submit" value="search">
+                </td>
+                <td th:if="${#fields.hasErrors()}">
+                    <p>Wrong id or not found</p>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <form method="get" th:action="@{/books/search by author}" th:object="${bookAuthorToSearch}" style="float: right">
+        <table>
+            <tr>
+                <td>
+                    <input type="text" placeholder="search book by author" th:field="*{author}">
+                </td>
+                <td>
+                    <input type="submit" value="search">
+                </td>
+                <td th:if="${#fields.hasErrors()}">
+                    <p>Wrong author or not found</p>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <form method="get" th:action="@{/books/search by title}" th:object="${bookTitleToSearch}" style="float: right">
+        <table>
+            <tr>
+                <td>
+                    <input type="text" placeholder="search book by title" th:field="*{title}">
+                </td>
+                <td>
+                    <input type="submit" value="search">
+                </td>
+                <td th:if="${#fields.hasErrors()}">
+                    <p>Wrong title or not found</p>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <form method="get" th:action="@{/books/search by size}" th:object="${bookSizeToSearch}" style="float: right" >
+        <table>
+            <tr>
+                <td>
+                    <input type="text" placeholder="search book by size" th:field="*{size}">
+                </td>
+                <td>
+                    <input type="submit" value="search">
+                </td>
+                <td th:if="${#fields.hasErrors()}">
+                    <p>Wrong size or not found</p>
+                </td>
+            </tr>
+        </table>
+    </form>
+
     <form method="post" th:action="@{/books/uploadFile}" enctype="multipart/form-data">
         <table>
             <tr>
@@ -125,19 +193,6 @@
                 </td>
                 <td>
                     <input type="submit" value="Upload">
-                </td>
-            </tr>
-        </table>
-    </form>
-
-    <form method="get" th:action="@{/books/search}">
-        <table>
-            <tr>
-                <td>
-                    <input type="text" placeholder="search book" th:name="bookToSearch">
-                </td>
-                <td>
-                    <input type="submit" value="search">
                 </td>
             </tr>
         </table>
@@ -152,7 +207,6 @@
             </tr>
         </table>
     </form>
-
 
     <table id="books">
         <tr>

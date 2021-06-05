@@ -1,5 +1,6 @@
 package org.example.web.controllers;
 
+import com.sun.deploy.net.HttpResponse;
 import org.apache.log4j.Logger;
 import org.example.app.exception.UploadFileException;
 import org.example.app.services.BookService;
@@ -20,10 +21,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Controller
 @RequestMapping(value = "/books")
@@ -311,6 +315,29 @@ public class BookShelfController {
         logger.info("new file saved at: "+ serverFile.getAbsolutePath());
 
         return "redirect:/books/shelf";
+    }
+
+    @GetMapping("/downloadFile")
+    public void downloadFile(HttpServletResponse response,
+                             @RequestParam ("fileName") String fileName) {
+
+        String rootPath = System.getProperty("catalina.home"); // get server path
+
+        String dataDirectory = rootPath + File.separator + "external_uploads" + File.separator;
+        Path file = Paths.get(dataDirectory, fileName);
+        logger.info(dataDirectory);
+        logger.info(file.getFileName());
+
+        if (Files.exists(file)) {
+            response.setContentType("APPLICATION/OCTET-STREAM");
+            response.addHeader("Content-Disposition", "attachment; filename="+fileName);
+            try {
+                Files.copy(file, response.getOutputStream());
+                response.getOutputStream().flush();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
     @ExceptionHandler(UploadFileException.class)

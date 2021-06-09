@@ -53,7 +53,7 @@
         </table>
     </form>
 
-    <form method="post" th:action="@{/books/remove by id}" th:object="${bookIdToRemove}">
+    <form method="post" th:action="@{/books/remove by id}" th:object="${bookIdToRemove}" style="float: right">
         <table>
             <tr>
                 <td>
@@ -71,7 +71,7 @@
 
 
 
-    <form method="post" th:action="@{/books/remove by author}" th:object="${bookAuthorToRemove}">
+    <form method="post" th:action="@{/books/remove by author}" th:object="${bookAuthorToRemove}" style="float: right">
         <table>
             <tr>
                 <td>
@@ -89,7 +89,7 @@
 
 
 
-    <form method="post" th:action="@{/books/remove by title}" th:object="${bookTitleToRemove}">
+    <form method="post" th:action="@{/books/remove by title}" th:object="${bookTitleToRemove}" style="float: right">
         <table>
             <tr>
                 <td>
@@ -105,7 +105,7 @@
         </table>
     </form>
 
-    <form method="post" th:action="@{/books/remove by size}" th:object="${bookSizeToRemove}">
+    <form method="post" th:action="@{/books/remove by size}" th:object="${bookSizeToRemove}" style="float: right">
         <table>
             <tr>
                 <td>
@@ -198,7 +198,7 @@
         </table>
     </form>
 
-    <form method="get" th:action="@{/books/downloadFile}" >
+    <form method="get" th:action="@{/books/downloadFile}" style="float: right">
         <table>
             <tr>
                 <td>

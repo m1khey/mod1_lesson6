@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Types;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,17 +56,28 @@ public class BookRepository implements ProjectRepository<Book>, ApplicationConte
 
     @Override
     public List<Book> searchItem(Object bookToSearch) {
-        List<Book> searchBookList= new ArrayList<>();
 
-        for (int i = 0; i <retreiveAll().size() ; i++) {
-            if (retreiveAll().get(i).getId().toString().equals(bookToSearch.toString()) ||
-                    retreiveAll().get(i).getAuthor().equals(bookToSearch.toString()) ||
-                    retreiveAll().get(i).getTitle().equals(bookToSearch.toString()) ||
-                    retreiveAll().get(i).getSize().toString().equals(bookToSearch.toString())) {
-                logger.info("search book completed: " + retreiveAll().get(i));
-                searchBookList.add(retreiveAll().get(i));
-            }
+        if (bookToSearch==null) {
+            return retreiveAll();
         }
+
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+        parameterSource.addValue("id",bookToSearch, Types.VARCHAR);
+        parameterSource.addValue("author",bookToSearch, Types.VARCHAR);
+        parameterSource.addValue("title",bookToSearch, Types.VARCHAR);
+        parameterSource.addValue("size",bookToSearch, Types.VARCHAR);
+        List<Book> searchBookList = jdbcTemplate.query("SELECT * FROM books WHERE REGEXP_LIKE(id,:id) " +
+                "or REGEXP_LIKE(author,:author) or REGEXP_LIKE(title,:title) " +
+                "or REGEXP_LIKE(size,:size)",parameterSource,(ResultSet rs,int rown)-> {
+            Book book = new Book();
+            book.setId(rs.getInt("id"));
+            book.setAuthor(rs.getString("author"));
+            book.setTitle(rs.getString("title"));
+            book.setSize(rs.getInt("size"));
+            return book;
+        });
+        logger.info("find books " + searchBookList.size());
+
         return searchBookList;
     }
 

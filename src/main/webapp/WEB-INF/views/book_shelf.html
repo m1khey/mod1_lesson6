@@ -198,18 +198,15 @@
         </table>
     </form>
 
-    <form method="get" th:action="@{/books/downloadFile}" style="float: right">
-        <table>
-            <tr>
-                <td>
-                    <input type="file" name="fileName"/>
-                </td>
-                <td>
-                    <input type="submit" value="Download">
-                </td>
-            </tr>
-        </table>
-    </form>
+    <table>
+        <tr th:each="file : ${fileList}">
+            <td>
+                <form th:method="get" th:action="@{/books/downloadFile}" enctype="multipart/form-data">
+                    <a th:href="'/simple_mvc_war_exploded/books/downloadFile?fileName=' + ${file}" th:text="'Download file: ' + ${file}">download</a>
+                </form>
+            </td>
+        </tr>
+    </table>
 
     <form method="get" th:action="@{/books/shelf}">
         <table>

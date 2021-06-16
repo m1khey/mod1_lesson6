@@ -1,6 +1,9 @@
 package org.example.web.controllers;
 
-import com.sun.deploy.net.HttpResponse;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.apache.log4j.Logger;
 import org.example.app.exception.UploadFileException;
 import org.example.app.services.BookService;
@@ -318,9 +321,11 @@ public class BookShelfController {
     }
 
     @GetMapping("/downloadFile")
-    public void downloadFile(HttpServletResponse response,
-                             @RequestParam ("fileName") String fileName) {
+    public void downloadFile(HttpServletRequest request,
+                             HttpServletResponse response,
+                             @RequestParam (name = "fileName") String fileName) {
 
+        logger.info("try download files: " + request + "; FileName: " + fileName);
         String rootPath = System.getProperty("catalina.home"); // get server path
 
         String dataDirectory = rootPath + File.separator + "external_uploads" + File.separator;
@@ -328,13 +333,16 @@ public class BookShelfController {
         logger.info(dataDirectory);
         logger.info(file.getFileName());
 
-        if (Files.exists(file)) {
+        if (Files.exists(file))
+        {
             response.setContentType("APPLICATION/OCTET-STREAM");
             response.addHeader("Content-Disposition", "attachment; filename="+fileName);
-            try {
+            try
+            {
                 Files.copy(file, response.getOutputStream());
                 response.getOutputStream().flush();
-            } catch (IOException ex) {
+            }
+            catch (IOException ex) {
                 ex.printStackTrace();
             }
         }

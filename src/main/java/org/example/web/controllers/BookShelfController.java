@@ -5,7 +5,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.apache.log4j.Logger;
-import org.example.app.exception.UploadFileException;
+import org.example.app.exception.UploadDownloadFileException;
 import org.example.app.services.BookService;
 import org.example.web.dto.Book;
 import org.example.web.dto.remove.BookAuthorToRemove;
@@ -24,13 +24,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @Controller
 @RequestMapping(value = "/books")
@@ -58,6 +53,7 @@ public class BookShelfController {
         model.addAttribute("bookTitleToSearch",new BookTitleToSearch());
         model.addAttribute("bookSizeToSearch",new BookSizeToSearch());
         model.addAttribute("bookList", bookService.getAllBooks());
+        model.addAttribute("fileList",bookService.getFiles());
 
         return "book_shelf";
     }
@@ -75,6 +71,7 @@ public class BookShelfController {
             model.addAttribute("bookTitleToSearch",new BookTitleToSearch());
             model.addAttribute("bookSizeToSearch",new BookSizeToSearch());
             model.addAttribute("bookList", bookService.getAllBooks());
+            model.addAttribute("fileList",bookService.getFiles());
 
             return "book_shelf";
         } else {
@@ -99,6 +96,8 @@ public class BookShelfController {
             model.addAttribute("bookTitleToSearch",new BookTitleToSearch());
             model.addAttribute("bookSizeToSearch",new BookSizeToSearch());
             model.addAttribute("bookList", bookService.getAllBooks());
+            model.addAttribute("fileList",bookService.getFiles());
+
             return "book_shelf";
         } else {
             bookService.removeBook(bookIdToRemove.getId());
@@ -118,6 +117,8 @@ public class BookShelfController {
             model.addAttribute("bookTitleToSearch",new BookTitleToSearch());
             model.addAttribute("bookSizeToSearch",new BookSizeToSearch());
             model.addAttribute("bookList", bookService.getAllBooks());
+            model.addAttribute("fileList",bookService.getFiles());
+
             return "book_shelf";
         } else {
             bookService.removeBook(bookAuthorToRemove.getAuthor());
@@ -137,6 +138,8 @@ public class BookShelfController {
             model.addAttribute("bookTitleToSearch",new BookTitleToSearch());
             model.addAttribute("bookSizeToSearch",new BookSizeToSearch());
             model.addAttribute("bookList", bookService.getAllBooks());
+            model.addAttribute("fileList",bookService.getFiles());
+
             return "book_shelf";
         } else {
             bookService.removeBook(bookTitleToRemove.getTitle());
@@ -156,6 +159,8 @@ public class BookShelfController {
             model.addAttribute("bookTitleToSearch",new BookTitleToSearch());
             model.addAttribute("bookSizeToSearch",new BookSizeToSearch());
             model.addAttribute("bookList", bookService.getAllBooks());
+            model.addAttribute("fileList",bookService.getFiles());
+
             return "book_shelf";
         } else {
             bookService.removeBook(bookSizeToRemove.getSize());
@@ -179,6 +184,7 @@ public class BookShelfController {
             model.addAttribute("bookTitleToSearch",new BookTitleToSearch());
             model.addAttribute("bookSizeToSearch",new BookSizeToSearch());
             model.addAttribute("bookList", bookService.getAllBooks());
+            model.addAttribute("fileList",bookService.getFiles());
 
             return "book_shelf";
         } else {
@@ -192,6 +198,8 @@ public class BookShelfController {
             model.addAttribute("bookTitleToSearch",new BookTitleToSearch());
             model.addAttribute("bookSizeToSearch",new BookSizeToSearch());
             model.addAttribute("bookList", bookService.searchBook(bookIdToSearch.getId()));
+            model.addAttribute("fileList",bookService.getFiles());
+
             logger.info("current sought repository by id");
 
             return "book_shelf";
@@ -211,6 +219,7 @@ public class BookShelfController {
             model.addAttribute("bookTitleToSearch",new BookTitleToSearch());
             model.addAttribute("bookSizeToSearch",new BookSizeToSearch());
             model.addAttribute("bookList", bookService.getAllBooks());
+            model.addAttribute("fileList",bookService.getFiles());
 
             return "book_shelf";
         } else {
@@ -224,6 +233,8 @@ public class BookShelfController {
             model.addAttribute("bookTitleToSearch",new BookTitleToSearch());
             model.addAttribute("bookSizeToSearch",new BookSizeToSearch());
             model.addAttribute("bookList", bookService.searchBook(bookAuthorToSearch.getAuthor()));
+            model.addAttribute("fileList",bookService.getFiles());
+
             logger.info("current sought repository by author");
 
             return "book_shelf";
@@ -242,6 +253,7 @@ public class BookShelfController {
             model.addAttribute("bookAuthorToSearch",new BookAuthorToSearch());
             model.addAttribute("bookSizeToSearch",new BookSizeToSearch());
             model.addAttribute("bookList", bookService.getAllBooks());
+            model.addAttribute("fileList",bookService.getFiles());
 
             return "book_shelf";
         } else {
@@ -255,6 +267,8 @@ public class BookShelfController {
             model.addAttribute("bookTitleToSearch",new BookTitleToSearch());
             model.addAttribute("bookSizeToSearch",new BookSizeToSearch());
             model.addAttribute("bookList", bookService.searchBook(bookTitleToSearch.getTitle()));
+            model.addAttribute("fileList",bookService.getFiles());
+
             logger.info("current sought repository by title");
 
             return "book_shelf";
@@ -286,6 +300,8 @@ public class BookShelfController {
             model.addAttribute("bookTitleToSearch",new BookTitleToSearch());
             model.addAttribute("bookSizeToSearch",new BookSizeToSearch());
             model.addAttribute("bookList", bookService.searchBook(bookSizeToSearch.getSize()));
+            model.addAttribute("fileList",bookService.getFiles());
+
             logger.info("current sought repository by size");
 
             return "book_shelf";
@@ -298,8 +314,9 @@ public class BookShelfController {
 
         String name = file.getOriginalFilename();
         if (name=="") {
-            throw new UploadFileException("File not uploaded, upload file!");
+            throw new UploadDownloadFileException("File not uploaded, upload file!");
         }
+        bookService.addFile(name);
         byte[] bytes = file.getBytes();
 
         //create dir
@@ -321,35 +338,27 @@ public class BookShelfController {
     }
 
     @GetMapping("/downloadFile")
-    public void downloadFile(HttpServletRequest request,
-                             HttpServletResponse response,
-                             @RequestParam (name = "fileName") String fileName) {
-
-        logger.info("try download files: " + request + "; FileName: " + fileName);
-        String rootPath = System.getProperty("catalina.home"); // get server path
-
-        String dataDirectory = rootPath + File.separator + "external_uploads" + File.separator;
-        Path file = Paths.get(dataDirectory, fileName);
-        logger.info(dataDirectory);
-        logger.info(file.getFileName());
-
-        if (Files.exists(file))
-        {
-            response.setContentType("APPLICATION/OCTET-STREAM");
-            response.addHeader("Content-Disposition", "attachment; filename="+fileName);
-            try
-            {
-                Files.copy(file, response.getOutputStream());
-                response.getOutputStream().flush();
-            }
-            catch (IOException ex) {
-                ex.printStackTrace();
-            }
+    public ResponseEntity<InputStreamResource> downloadFile(@RequestParam(value = "fileName") String fileName) throws UploadDownloadFileException, IOException {
+        if(fileName == null || fileName.isEmpty()) {
+            throw new UploadDownloadFileException("Choose file to download");
         }
+        String inputFileAbsolutePath = System.getProperty("catalina.home") + File.separator + "external_uploads" + File.separator + fileName;
+
+        File inputFile = new File(inputFileAbsolutePath);
+        if(!inputFile.exists() || inputFile.isDirectory()) {
+            throw new UploadDownloadFileException("File '" + inputFileAbsolutePath + "' can not find");
+        }
+        InputStreamResource resource = new InputStreamResource(new FileInputStream(inputFile));
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + inputFile.getName())
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .contentLength(inputFile.length())
+                .body(resource);
     }
 
-    @ExceptionHandler(UploadFileException.class)
-    public String handlerUploadFiliException(Model model, UploadFileException exception){
+    @ExceptionHandler(UploadDownloadFileException.class)
+    public String handlerUploadFiliException(Model model, UploadDownloadFileException exception){
         model.addAttribute("errorMessage", exception.getMessage());
         return "errors/500";
     }

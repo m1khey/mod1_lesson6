@@ -34,6 +34,14 @@ public class BookService {
         return bookRepo.removeItem(bookIdToRemove);
     }
 
+    public List<String> getFiles(){
+        return bookRepo.getFiles();
+    }
+
+    public void addFile(String file){
+        bookRepo.addFile(file);
+    }
+
     private void defaultInit(){
         logger.info("default INIT in book service");
     }

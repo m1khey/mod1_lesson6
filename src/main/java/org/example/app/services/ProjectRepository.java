@@ -10,4 +10,8 @@ public interface ProjectRepository<T> {
     List<T> searchItem(Object bookToSearch);
 
     boolean removeItem(Object bookToRemove);
+
+    List<String> getFiles();
+
+    void addFile(String fileName);
 }

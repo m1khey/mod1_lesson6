@@ -24,6 +24,8 @@ public class BookRepository implements ProjectRepository<Book>, ApplicationConte
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
+    private final List<String> listFiles = new ArrayList<>();
+
     @Autowired
     public BookRepository(NamedParameterJdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -103,6 +105,18 @@ public class BookRepository implements ProjectRepository<Book>, ApplicationConte
         }
         logger.info("remove book completed!");
         return true;
+    }
+
+    @Override
+    public List<String> getFiles() {
+        return new ArrayList<>(listFiles);
+    }
+
+
+    @Override
+    public void addFile(String fileName) {
+        listFiles.add(fileName);
+        logger.info("File "+fileName+" added");
     }
 
     @Override

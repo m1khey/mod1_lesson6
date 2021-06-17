@@ -1,10 +1,10 @@
 package org.example.app.exception;
 
-public class UploadFileException extends Exception {
+public class UploadDownloadFileException extends Exception {
 
     private final String message;
 
-    public UploadFileException(String message) {
+    public UploadDownloadFileException(String message) {
         this.message=message;
     }
 

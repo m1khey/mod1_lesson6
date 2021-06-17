@@ -198,7 +198,7 @@
         </table>
     </form>
 
-    <table>
+    <table style="float: right">
         <tr th:each="file : ${fileList}">
             <td>
                 <form th:method="get" th:action="@{/books/downloadFile}" enctype="multipart/form-data">

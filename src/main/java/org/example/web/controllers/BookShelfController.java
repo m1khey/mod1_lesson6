@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import org.example.app.exception.UploadDownloadFileException;
 import org.example.app.services.BookService;
 import org.example.web.dto.Book;
-import org.example.web.dto.remove.BookToRemove;
+import org.example.web.dto.BookToRemove;
 import org.example.web.dto.search.BookAuthorToSearch;
 import org.example.web.dto.search.BookIdToSearch;
 import org.example.web.dto.search.BookSizeToSearch;

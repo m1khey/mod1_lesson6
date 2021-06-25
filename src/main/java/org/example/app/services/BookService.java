@@ -2,7 +2,7 @@ package org.example.app.services;
 
 import org.apache.log4j.Logger;
 import org.example.web.dto.Book;
-import org.example.web.dto.remove.BookToRemove;
+import org.example.web.dto.BookToRemove;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

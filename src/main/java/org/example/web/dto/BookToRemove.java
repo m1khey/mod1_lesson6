@@ -1,4 +1,4 @@
-package org.example.web.dto.remove;
+package org.example.web.dto;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
@@ -9,11 +9,13 @@ public class BookToRemove {
 
     @NotNull
     private Integer id;
+    @NotEmpty
     @Size(max = 50)
     private String author;
     @NotEmpty
     @Size(max = 50)
     private String title;
+    @NotNull
     @Digits(integer = 4,fraction = 0)
     private Integer size;
 

@@ -1,5 +1,7 @@
 package org.example.app.services;
 
+import org.example.web.dto.remove.BookToRemove;
+
 import java.util.List;
 
 public interface ProjectRepository<T> {
@@ -9,7 +11,7 @@ public interface ProjectRepository<T> {
 
     List<T> searchItem(Object bookToSearch);
 
-    boolean removeItem(Object bookToRemove);
+    boolean removeItem(Integer bookIdToRemove);
 
     List<String> getFiles();
 

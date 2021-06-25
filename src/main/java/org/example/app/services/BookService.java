@@ -2,10 +2,12 @@ package org.example.app.services;
 
 import org.apache.log4j.Logger;
 import org.example.web.dto.Book;
+import org.example.web.dto.remove.BookToRemove;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.PatternSyntaxException;
 
 @Service
 public class BookService {
@@ -30,8 +32,84 @@ public class BookService {
         bookRepo.store(book);
     }
 
-    public boolean removeBook(Object bookIdToRemove) {
-        return bookRepo.removeItem(bookIdToRemove);
+    public boolean removeBook(BookToRemove bookToRemove) {
+        String bookIdToRemove = String.valueOf(bookToRemove.getId());
+        String bookAuthorToRemove = bookToRemove.getAuthor();
+        String bookTitleToRemove = bookToRemove.getTitle();
+        String bookSizeToRemove = String.valueOf(bookToRemove.getSize());
+
+        logger.info(String.valueOf(bookToRemove.getId())=="");
+        logger.info("try delete book" + bookIdToRemove + bookAuthorToRemove + bookTitleToRemove + bookSizeToRemove);
+
+        boolean result = false;
+
+        if (bookIdToRemove.isEmpty() &&
+                bookAuthorToRemove.isEmpty() &&
+                bookTitleToRemove.isEmpty() &&
+                bookSizeToRemove.equals("null"))
+        {
+            logger.info("all field is empty");
+            return false;
+        }
+
+        boolean checkId;
+        boolean checkAuthor;
+        boolean checkTitle;
+        boolean checkSize;
+
+        for (Book tmpBook :
+                bookRepo.retreiveAll()) {
+
+            checkId = checkParam(String.valueOf(tmpBook.getId()), bookIdToRemove, false);
+            checkAuthor = checkParam(tmpBook.getAuthor(), bookAuthorToRemove, false);
+            checkTitle = checkParam(tmpBook.getTitle(), bookTitleToRemove, false);
+            checkSize = checkParam(tmpBook.getSize().toString(), bookSizeToRemove, false);
+
+            logger.info("check status: " + checkId + checkAuthor + checkTitle + checkSize);
+            if (checkId && checkAuthor && checkTitle && checkSize){
+                result = bookRepo.removeItem(tmpBook.getId());
+            }
+        }
+
+        return result;
+    }
+
+    public boolean checkParam (String bookParam, String frontParam, boolean isFilter){
+        boolean result = false;
+        if (bookParam == null || frontParam == null || frontParam.equals("") || frontParam.equals("null") ) {
+            result = true;
+        }
+        else {
+            if (isFilter) {
+                if (bookParam.contains(frontParam)) {
+                    result = true;
+                } else {
+                    try{
+                        if (bookParam.matches(frontParam)){
+                            result = true;
+                        }
+                    }
+                    catch(PatternSyntaxException e){
+                        result = false;
+                    }
+                }
+            }
+            else{
+                if (bookParam.equals(frontParam)) {
+                    result = true;
+                } else{
+                    try{
+                        if (bookParam.matches(frontParam)){
+                            result = true;
+                        }
+                    }
+                    catch(PatternSyntaxException e){
+                        result = false;
+                    }
+                }
+            }
+        }
+        return result;
     }
 
     public List<String> getFiles(){

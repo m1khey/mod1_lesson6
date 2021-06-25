@@ -2,6 +2,7 @@ package org.example.app.services;
 
 import org.apache.log4j.Logger;
 import org.example.web.dto.Book;
+import org.example.web.dto.remove.BookToRemove;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -84,26 +85,13 @@ public class BookRepository implements ProjectRepository<Book>, ApplicationConte
     }
 
     @Override
-    public boolean removeItem(Object bookToRemove) {
+    public boolean removeItem(Integer bookIdToRemove) {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
 
-        for (Book book:retreiveAll()
-             ) {
-            if (book.getId().toString().equals(bookToRemove.toString())) {
-                parameterSource.addValue("id", bookToRemove);
-                jdbcTemplate.update("DELETE FROM books WHERE id=:id",parameterSource);
-            } else if (book.getAuthor().equals(bookToRemove)) {
-                parameterSource.addValue("author", bookToRemove);
-                jdbcTemplate.update("DELETE FROM books WHERE author=:author",parameterSource);
-            } else if (book.getTitle().equals(bookToRemove)) {
-                parameterSource.addValue("title", bookToRemove);
-                jdbcTemplate.update("DELETE FROM books WHERE title=:title",parameterSource);
-            } else if (book.getSize().toString().equals(bookToRemove.toString())) {
-                parameterSource.addValue("size", bookToRemove);
-                jdbcTemplate.update("DELETE FROM books WHERE size=:size",parameterSource);
-            }
-        }
-        logger.info("remove book completed!");
+        parameterSource.addValue("id", bookIdToRemove);
+        jdbcTemplate.update("DELETE FROM books WHERE id=:id",parameterSource);
+
+        logger.info("remove book completed!" + bookIdToRemove);
         return true;
     }
 

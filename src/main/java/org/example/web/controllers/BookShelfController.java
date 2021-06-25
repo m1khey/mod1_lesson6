@@ -8,10 +8,7 @@ import org.apache.log4j.Logger;
 import org.example.app.exception.UploadDownloadFileException;
 import org.example.app.services.BookService;
 import org.example.web.dto.Book;
-import org.example.web.dto.remove.BookAuthorToRemove;
-import org.example.web.dto.remove.BookIdToRemove;
-import org.example.web.dto.remove.BookSizeToRemove;
-import org.example.web.dto.remove.BookTitleToRemove;
+import org.example.web.dto.remove.BookToRemove;
 import org.example.web.dto.search.BookAuthorToSearch;
 import org.example.web.dto.search.BookIdToSearch;
 import org.example.web.dto.search.BookSizeToSearch;
@@ -44,10 +41,7 @@ public class BookShelfController {
     public String books(Model model) {
         logger.info(this.toString());
         model.addAttribute("book", new Book());
-        model.addAttribute("bookIdToRemove", new BookIdToRemove());
-        model.addAttribute("bookAuthorToRemove", new BookAuthorToRemove());
-        model.addAttribute("bookTitleToRemove", new BookTitleToRemove());
-        model.addAttribute("bookSizeToRemove", new BookSizeToRemove());
+        model.addAttribute("bookToRemove", new BookToRemove());
         model.addAttribute("bookIdToSearch",new BookIdToSearch());
         model.addAttribute("bookAuthorToSearch",new BookAuthorToSearch());
         model.addAttribute("bookTitleToSearch",new BookTitleToSearch());
@@ -62,10 +56,7 @@ public class BookShelfController {
     public String saveBook(@Valid Book book, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("book", book);
-            model.addAttribute("bookIdToRemove", new BookIdToRemove());
-            model.addAttribute("bookAuthorToRemove", new BookAuthorToRemove());
-            model.addAttribute("bookTitleToRemove", new BookTitleToRemove());
-            model.addAttribute("bookSizeToRemove", new BookSizeToRemove());
+            model.addAttribute("bookToRemove", new BookToRemove());
             model.addAttribute("bookIdToSearch",new BookIdToSearch());
             model.addAttribute("bookAuthorToSearch",new BookAuthorToSearch());
             model.addAttribute("bookTitleToSearch",new BookTitleToSearch());
@@ -84,13 +75,10 @@ public class BookShelfController {
 
     //remove----------------------------------------------------------------
 
-    @PostMapping("/remove by id")
-    public String removeBook(@Valid BookIdToRemove bookIdToRemove, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
+    @PostMapping("/remove")
+    public String removeBook(@Valid BookToRemove bookToRemove, BindingResult bindingResult, Model model) {
+        if(bindingResult.getFieldErrorCount()==4) {
             model.addAttribute("book", new Book());
-            model.addAttribute("bookAuthorToRemove", new BookAuthorToRemove());
-            model.addAttribute("bookTitleToRemove", new BookTitleToRemove());
-            model.addAttribute("bookSizeToRemove", new BookSizeToRemove());
             model.addAttribute("bookIdToSearch",new BookIdToSearch());
             model.addAttribute("bookAuthorToSearch",new BookAuthorToSearch());
             model.addAttribute("bookTitleToSearch",new BookTitleToSearch());
@@ -100,74 +88,10 @@ public class BookShelfController {
 
             return "book_shelf";
         } else {
-            bookService.removeBook(bookIdToRemove.getId());
+            bookService.removeBook(bookToRemove);
             return "redirect:/books/shelf";
         }
     }
-
-    @PostMapping("/remove by author")
-    public String removeBook(@Valid BookAuthorToRemove bookAuthorToRemove, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("book", new Book());
-            model.addAttribute("bookIdToRemove", new BookIdToRemove());
-            model.addAttribute("bookTitleToRemove", new BookTitleToRemove());
-            model.addAttribute("bookSizeToRemove", new BookSizeToRemove());
-            model.addAttribute("bookIdToSearch",new BookIdToSearch());
-            model.addAttribute("bookAuthorToSearch",new BookAuthorToSearch());
-            model.addAttribute("bookTitleToSearch",new BookTitleToSearch());
-            model.addAttribute("bookSizeToSearch",new BookSizeToSearch());
-            model.addAttribute("bookList", bookService.getAllBooks());
-            model.addAttribute("fileList",bookService.getFiles());
-
-            return "book_shelf";
-        } else {
-            bookService.removeBook(bookAuthorToRemove.getAuthor());
-            return "redirect:/books/shelf";
-        }
-    }
-
-    @PostMapping("/remove by title")
-    public String removeBook(@Valid BookTitleToRemove bookTitleToRemove, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("book", new Book());
-            model.addAttribute("bookIdToRemove", new BookIdToRemove());
-            model.addAttribute("bookAuthorToRemove", new BookAuthorToRemove());
-            model.addAttribute("bookSizeToRemove", new BookSizeToRemove());
-            model.addAttribute("bookIdToSearch",new BookIdToSearch());
-            model.addAttribute("bookAuthorToSearch",new BookAuthorToSearch());
-            model.addAttribute("bookTitleToSearch",new BookTitleToSearch());
-            model.addAttribute("bookSizeToSearch",new BookSizeToSearch());
-            model.addAttribute("bookList", bookService.getAllBooks());
-            model.addAttribute("fileList",bookService.getFiles());
-
-            return "book_shelf";
-        } else {
-            bookService.removeBook(bookTitleToRemove.getTitle());
-            return "redirect:/books/shelf";
-        }
-    }
-
-    @PostMapping("/remove by size")
-    public String removeBook(@Valid BookSizeToRemove bookSizeToRemove, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("book", new Book());
-            model.addAttribute("bookIdToRemove", new BookIdToRemove());
-            model.addAttribute("bookAuthorToRemove", new BookAuthorToRemove());
-            model.addAttribute("bookTitleToRemove", new BookTitleToRemove());
-            model.addAttribute("bookIdToSearch",new BookIdToSearch());
-            model.addAttribute("bookAuthorToSearch",new BookAuthorToSearch());
-            model.addAttribute("bookTitleToSearch",new BookTitleToSearch());
-            model.addAttribute("bookSizeToSearch",new BookSizeToSearch());
-            model.addAttribute("bookList", bookService.getAllBooks());
-            model.addAttribute("fileList",bookService.getFiles());
-
-            return "book_shelf";
-        } else {
-            bookService.removeBook(bookSizeToRemove.getSize());
-            return "redirect:/books/shelf";
-        }
-    }
-
     //------------------------------------------------------------------remove
 
     //search------------------------------------------------------------------
@@ -176,10 +100,7 @@ public class BookShelfController {
     public String searchBook(@Valid BookIdToSearch bookIdToSearch,BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()){
             model.addAttribute("book", new Book());
-            model.addAttribute("bookIdToRemove", new BookIdToRemove());
-            model.addAttribute("bookAuthorToRemove", new BookAuthorToRemove());
-            model.addAttribute("bookTitleToRemove", new BookTitleToRemove());
-            model.addAttribute("bookSizeToRemove", new BookSizeToRemove());
+            model.addAttribute("bookToRemove", new BookToRemove());
             model.addAttribute("bookAuthorToSearch",new BookAuthorToSearch());
             model.addAttribute("bookTitleToSearch",new BookTitleToSearch());
             model.addAttribute("bookSizeToSearch",new BookSizeToSearch());
@@ -189,10 +110,7 @@ public class BookShelfController {
             return "book_shelf";
         } else {
             model.addAttribute("book", new Book());
-            model.addAttribute("bookIdToRemove", new BookIdToRemove());
-            model.addAttribute("bookAuthorToRemove", new BookAuthorToRemove());
-            model.addAttribute("bookTitleToRemove", new BookTitleToRemove());
-            model.addAttribute("bookSizeToRemove", new BookSizeToRemove());
+            model.addAttribute("bookToRemove", new BookToRemove());
             model.addAttribute("bookIdToSearch",new BookIdToSearch());
             model.addAttribute("bookAuthorToSearch",new BookAuthorToSearch());
             model.addAttribute("bookTitleToSearch",new BookTitleToSearch());
@@ -211,10 +129,7 @@ public class BookShelfController {
     public String searchBook(@Valid BookAuthorToSearch bookAuthorToSearch,BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()){
             model.addAttribute("book", new Book());
-            model.addAttribute("bookIdToRemove", new BookIdToRemove());
-            model.addAttribute("bookAuthorToRemove", new BookAuthorToRemove());
-            model.addAttribute("bookTitleToRemove", new BookTitleToRemove());
-            model.addAttribute("bookSizeToRemove", new BookSizeToRemove());
+            model.addAttribute("bookToRemove", new BookToRemove());
             model.addAttribute("bookIdToSearch",new BookIdToSearch());
             model.addAttribute("bookTitleToSearch",new BookTitleToSearch());
             model.addAttribute("bookSizeToSearch",new BookSizeToSearch());
@@ -224,10 +139,7 @@ public class BookShelfController {
             return "book_shelf";
         } else {
             model.addAttribute("book", new Book());
-            model.addAttribute("bookIdToRemove", new BookIdToRemove());
-            model.addAttribute("bookAuthorToRemove", new BookAuthorToRemove());
-            model.addAttribute("bookTitleToRemove", new BookTitleToRemove());
-            model.addAttribute("bookSizeToRemove", new BookSizeToRemove());
+            model.addAttribute("bookToRemove", new BookToRemove());
             model.addAttribute("bookIdToSearch",new BookIdToSearch());
             model.addAttribute("bookAuthorToSearch",new BookAuthorToSearch());
             model.addAttribute("bookTitleToSearch",new BookTitleToSearch());
@@ -245,10 +157,7 @@ public class BookShelfController {
     public String searchBook(@Valid BookTitleToSearch bookTitleToSearch,BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()){
             model.addAttribute("book", new Book());
-            model.addAttribute("bookIdToRemove", new BookIdToRemove());
-            model.addAttribute("bookAuthorToRemove", new BookAuthorToRemove());
-            model.addAttribute("bookTitleToRemove", new BookTitleToRemove());
-            model.addAttribute("bookSizeToRemove", new BookSizeToRemove());
+            model.addAttribute("bookToRemove", new BookToRemove());
             model.addAttribute("bookIdToSearch",new BookIdToSearch());
             model.addAttribute("bookAuthorToSearch",new BookAuthorToSearch());
             model.addAttribute("bookSizeToSearch",new BookSizeToSearch());
@@ -258,10 +167,7 @@ public class BookShelfController {
             return "book_shelf";
         } else {
             model.addAttribute("book", new Book());
-            model.addAttribute("bookIdToRemove", new BookIdToRemove());
-            model.addAttribute("bookAuthorToRemove", new BookAuthorToRemove());
-            model.addAttribute("bookTitleToRemove", new BookTitleToRemove());
-            model.addAttribute("bookSizeToRemove", new BookSizeToRemove());
+            model.addAttribute("bookToRemove", new BookToRemove());
             model.addAttribute("bookIdToSearch",new BookIdToSearch());
             model.addAttribute("bookAuthorToSearch",new BookAuthorToSearch());
             model.addAttribute("bookTitleToSearch",new BookTitleToSearch());
@@ -279,10 +185,7 @@ public class BookShelfController {
     public String searchBook(@Valid BookSizeToSearch bookSizeToSearch,BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()){
             model.addAttribute("book", new Book());
-            model.addAttribute("bookIdToRemove", new BookIdToRemove());
-            model.addAttribute("bookAuthorToRemove", new BookAuthorToRemove());
-            model.addAttribute("bookTitleToRemove", new BookTitleToRemove());
-            model.addAttribute("bookSizeToRemove", new BookSizeToRemove());
+            model.addAttribute("bookToRemove", new BookToRemove());
             model.addAttribute("bookIdToSearch",new BookIdToSearch());
             model.addAttribute("bookAuthorToSearch",new BookAuthorToSearch());
             model.addAttribute("bookTitleToSearch",new BookTitleToSearch());
@@ -291,10 +194,7 @@ public class BookShelfController {
             return "book_shelf";
         } else {
             model.addAttribute("book", new Book());
-            model.addAttribute("bookIdToRemove", new BookIdToRemove());
-            model.addAttribute("bookAuthorToRemove", new BookAuthorToRemove());
-            model.addAttribute("bookTitleToRemove", new BookTitleToRemove());
-            model.addAttribute("bookSizeToRemove", new BookSizeToRemove());
+            model.addAttribute("bookToRemove", new BookToRemove());
             model.addAttribute("bookIdToSearch",new BookIdToSearch());
             model.addAttribute("bookAuthorToSearch",new BookAuthorToSearch());
             model.addAttribute("bookTitleToSearch",new BookTitleToSearch());

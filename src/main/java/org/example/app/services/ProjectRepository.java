@@ -1,5 +1,7 @@
 package org.example.app.services;
 
+import org.example.web.dto.BookToSearch;
+
 import java.util.List;
 
 public interface ProjectRepository<T> {
@@ -7,7 +9,8 @@ public interface ProjectRepository<T> {
 
     void store(T book);
 
-    List<T> searchItem(Object bookToSearch);
+    List<T> searchItem(String bookToSearchByAutor,String bookToSearchByTitle
+            ,Integer bookToSearchBySize);
 
     boolean removeItem(Integer bookIdToRemove);
 

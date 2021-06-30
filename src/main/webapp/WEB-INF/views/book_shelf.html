@@ -80,65 +80,25 @@
         </table>
     </form>
 
-    <form method="get" th:action="@{/books/search by id}" th:object="${bookIdToSearch}" style="float: right">
+    <form method="get" th:action="@{/books/search}" th:object="${bookToSearch}" >
         <table>
             <tr>
                 <td>
-                    <input type="text" placeholder="search book by id" th:field="*{id}">
+                    <input type="text" placeholder="author" th:field="*{author}">
+                </td>
+                <td>
+                    <input type="text" placeholder="book_title" th:field="*{title}">
+                </td>
+                <td>
+                    <input type="text" placeholder="size (pages)" th:field="*{size}">
                 </td>
                 <td>
                     <input type="submit" value="search">
-                </td>
-                <td th:if="${#fields.hasErrors()}">
-                    <p>Wrong id or not found</p>
                 </td>
             </tr>
-        </table>
-    </form>
-
-    <form method="get" th:action="@{/books/search by author}" th:object="${bookAuthorToSearch}" style="float: right">
-        <table>
-            <tr>
+            <tr th:if="${#fields.allErrors().size()}==4">
                 <td>
-                    <input type="text" placeholder="search book by author" th:field="*{author}">
-                </td>
-                <td>
-                    <input type="submit" value="search">
-                </td>
-                <td th:if="${#fields.hasErrors()}">
-                    <p>Wrong author or not found</p>
-                </td>
-            </tr>
-        </table>
-    </form>
-
-    <form method="get" th:action="@{/books/search by title}" th:object="${bookTitleToSearch}" style="float: right">
-        <table>
-            <tr>
-                <td>
-                    <input type="text" placeholder="search book by title" th:field="*{title}">
-                </td>
-                <td>
-                    <input type="submit" value="search">
-                </td>
-                <td th:if="${#fields.hasErrors()}">
-                    <p>Wrong title or not found</p>
-                </td>
-            </tr>
-        </table>
-    </form>
-
-    <form method="get" th:action="@{/books/search by size}" th:object="${bookSizeToSearch}" style="float: right" >
-        <table>
-            <tr>
-                <td>
-                    <input type="text" placeholder="search book by size" th:field="*{size}">
-                </td>
-                <td>
-                    <input type="submit" value="search">
-                </td>
-                <td th:if="${#fields.hasErrors()}">
-                    <p>Wrong size or not found</p>
+                    <p><font color="#8b0000">wrong data in fields</font></p>
                 </td>
             </tr>
         </table>

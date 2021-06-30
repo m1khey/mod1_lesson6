@@ -3,9 +3,11 @@ package org.example.app.services;
 import org.apache.log4j.Logger;
 import org.example.web.dto.Book;
 import org.example.web.dto.BookToRemove;
+import org.example.web.dto.BookToSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.PatternSyntaxException;
 
@@ -24,12 +26,17 @@ public class BookService {
         return bookRepo.retreiveAll();
     }
 
-    public List<Book> searchBook(Object bookToSearch){
-        return bookRepo.searchItem(bookToSearch);
-    }
-
     public void saveBook(Book book) {
         bookRepo.store(book);
+    }
+
+    public List<Book> searchBook(String bookToSearchByAutor,String bookToSearchByTitle
+            ,Integer bookToSearchBySize){
+
+        logger.info("try search books");
+
+        return bookRepo.searchItem(bookToSearchByAutor,bookToSearchByTitle
+                ,bookToSearchBySize);
     }
 
     public boolean removeBook(BookToRemove bookToRemove) {

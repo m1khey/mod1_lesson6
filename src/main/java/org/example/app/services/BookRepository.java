@@ -2,6 +2,7 @@ package org.example.app.services;
 
 import org.apache.log4j.Logger;
 import org.example.web.dto.Book;
+import org.example.web.dto.BookToSearch;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -57,19 +58,20 @@ public class BookRepository implements ProjectRepository<Book>, ApplicationConte
     }
 
     @Override
-    public List<Book> searchItem(Object bookToSearch) {
+    public List<Book> searchItem(String bookToSearchByAutor,String bookToSearchByTitle
+            ,Integer bookToSearchBySize) {
 
-        if (bookToSearch==null) {
+        if (bookToSearchByAutor.equals(null) && bookToSearchByTitle.equals(null)
+                && bookToSearchBySize.equals(null)) {
             return retreiveAll();
         }
 
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-        parameterSource.addValue("id",bookToSearch, Types.VARCHAR);
-        parameterSource.addValue("author",bookToSearch, Types.VARCHAR);
-        parameterSource.addValue("title",bookToSearch, Types.VARCHAR);
-        parameterSource.addValue("size",bookToSearch, Types.VARCHAR);
-        List<Book> searchBookList = jdbcTemplate.query("SELECT * FROM books WHERE REGEXP_LIKE(id,:id) " +
-                "or REGEXP_LIKE(author,:author) or REGEXP_LIKE(title,:title) " +
+        parameterSource.addValue("author",bookToSearchByAutor, Types.VARCHAR);
+        parameterSource.addValue("title",bookToSearchByTitle, Types.VARCHAR);
+        parameterSource.addValue("size",bookToSearchBySize, Types.VARCHAR);
+        List<Book> searchBookList = jdbcTemplate.query("SELECT * FROM books WHERE REGEXP_LIKE(author,:author) " +
+                " or REGEXP_LIKE(title,:title) " +
                 "or REGEXP_LIKE(size,:size)",parameterSource,(ResultSet rs,int rown)-> {
             Book book = new Book();
             book.setId(rs.getInt("id"));

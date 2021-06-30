@@ -5,8 +5,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class Book {
+public class BookToSearch {
 
+    @NotNull
     private Integer id;
     @NotEmpty
     @Size(max = 50)
@@ -48,15 +49,5 @@ public class Book {
 
     public void setSize(Integer size) {
         this.size = size;
-    }
-
-    @Override
-    public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", author='" + author + '\'' +
-                ", title='" + title + '\'' +
-                ", size=" + size +
-                '}';
     }
 }

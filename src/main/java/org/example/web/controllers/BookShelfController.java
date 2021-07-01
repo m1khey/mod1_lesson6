@@ -70,10 +70,9 @@ public class BookShelfController {
     public String removeBook(@Valid BookToRemove bookToRemove, BindingResult bindingResult, Model model) {
         if(bindingResult.getFieldErrorCount()==4) {
             model.addAttribute("book", new Book());
-            model.addAttribute("bookIdToSearch",new BookToSearch());
+            model.addAttribute("bookToSearch",new BookToSearch());
             model.addAttribute("bookList", bookService.getAllBooks());
             model.addAttribute("fileList",bookService.getFiles());
-
             return "book_shelf";
         } else {
             bookService.removeBook(bookToRemove);
@@ -89,7 +88,6 @@ public class BookShelfController {
         if (bindingResult.getFieldErrorCount()==4){
             model.addAttribute("book", new Book());
             model.addAttribute("bookToRemove", new BookToRemove());
-            model.addAttribute("bookToSearch",new BookToSearch());
             model.addAttribute("bookList", bookService.getAllBooks());
             model.addAttribute("fileList",bookService.getFiles());
 
@@ -98,7 +96,7 @@ public class BookShelfController {
             model.addAttribute("book", new Book());
             model.addAttribute("bookToRemove", new BookToRemove());
             model.addAttribute("bookToSearch",new BookToSearch());
-            model.addAttribute("bookList", bookService.searchBook(bookToSearch.getAuthor()
+            model.addAttribute("bookList", bookService.searchBook(bookToSearch.getId(),bookToSearch.getAuthor()
                     ,bookToSearch.getTitle(),bookToSearch.getSize()));
             model.addAttribute("fileList",bookService.getFiles());
 

@@ -58,7 +58,7 @@ public class BookRepository implements ProjectRepository<Book>, ApplicationConte
     }
 
     @Override
-    public List<Book> searchItem(String bookToSearchByAutor,String bookToSearchByTitle
+    public List<Book> searchItem(Integer bookToSearchById, String bookToSearchByAutor,String bookToSearchByTitle
             ,Integer bookToSearchBySize) {
 
         if (bookToSearchByAutor == null && bookToSearchByTitle == null
@@ -67,10 +67,11 @@ public class BookRepository implements ProjectRepository<Book>, ApplicationConte
         }
 
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+        parameterSource.addValue("id",bookToSearchById);
         parameterSource.addValue("author",bookToSearchByAutor);
         parameterSource.addValue("title",bookToSearchByTitle);
         parameterSource.addValue("size",bookToSearchBySize);
-        List<Book> searchBookList = jdbcTemplate.query("SELECT * FROM books WHERE author=:author " +
+        List<Book> searchBookList = jdbcTemplate.query("SELECT * FROM books WHERE id=:id or author=:author " +
                 " or title=:title " +
                 "or size=:size",parameterSource,(ResultSet rs,int rown)-> {
             Book book = new Book();

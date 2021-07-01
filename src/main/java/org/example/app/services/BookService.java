@@ -30,12 +30,12 @@ public class BookService {
         bookRepo.store(book);
     }
 
-    public List<Book> searchBook(String bookToSearchByAutor,String bookToSearchByTitle
+    public List<Book> searchBook(Integer bookToSearchById, String bookToSearchByAutor,String bookToSearchByTitle
             ,Integer bookToSearchBySize){
 
         logger.info("try search books");
 
-        return bookRepo.searchItem(bookToSearchByAutor,bookToSearchByTitle
+        return bookRepo.searchItem(bookToSearchById, bookToSearchByAutor,bookToSearchByTitle
                 ,bookToSearchBySize);
     }
 

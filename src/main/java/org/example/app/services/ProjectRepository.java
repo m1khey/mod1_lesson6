@@ -9,7 +9,7 @@ public interface ProjectRepository<T> {
 
     void store(T book);
 
-    List<T> searchItem(String bookToSearchByAutor,String bookToSearchByTitle
+    List<T> searchItem(Integer bookToSearchById, String bookToSearchByAutor,String bookToSearchByTitle
             ,Integer bookToSearchBySize);
 
     boolean removeItem(Integer bookIdToRemove);

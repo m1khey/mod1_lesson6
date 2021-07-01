@@ -61,18 +61,18 @@ public class BookRepository implements ProjectRepository<Book>, ApplicationConte
     public List<Book> searchItem(String bookToSearchByAutor,String bookToSearchByTitle
             ,Integer bookToSearchBySize) {
 
-        if (bookToSearchByAutor.equals(null) && bookToSearchByTitle.equals(null)
-                && bookToSearchBySize.equals(null)) {
+        if (bookToSearchByAutor == null && bookToSearchByTitle == null
+                && bookToSearchBySize == null) {
             return retreiveAll();
         }
 
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-        parameterSource.addValue("author",bookToSearchByAutor, Types.VARCHAR);
-        parameterSource.addValue("title",bookToSearchByTitle, Types.VARCHAR);
-        parameterSource.addValue("size",bookToSearchBySize, Types.VARCHAR);
-        List<Book> searchBookList = jdbcTemplate.query("SELECT * FROM books WHERE REGEXP_LIKE(author,:author) " +
-                " or REGEXP_LIKE(title,:title) " +
-                "or REGEXP_LIKE(size,:size)",parameterSource,(ResultSet rs,int rown)-> {
+        parameterSource.addValue("author",bookToSearchByAutor);
+        parameterSource.addValue("title",bookToSearchByTitle);
+        parameterSource.addValue("size",bookToSearchBySize);
+        List<Book> searchBookList = jdbcTemplate.query("SELECT * FROM books WHERE author=:author " +
+                " or title=:title " +
+                "or size=:size",parameterSource,(ResultSet rs,int rown)-> {
             Book book = new Book();
             book.setId(rs.getInt("id"));
             book.setAuthor(rs.getString("author"));

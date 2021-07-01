@@ -98,8 +98,8 @@ public class BookShelfController {
             model.addAttribute("book", new Book());
             model.addAttribute("bookToRemove", new BookToRemove());
             model.addAttribute("bookToSearch",new BookToSearch());
-            model.addAttribute("bookList", bookService.searchBook(bookToSearch.getTitle()
-                    ,bookToSearch.getAuthor(),bookToSearch.getSize()));
+            model.addAttribute("bookList", bookService.searchBook(bookToSearch.getAuthor()
+                    ,bookToSearch.getTitle(),bookToSearch.getSize()));
             model.addAttribute("fileList",bookService.getFiles());
 
             logger.info("current repository search list ");
